@@ -1,18 +1,112 @@
-## Getting Started
+# 🧩 Task Manager - Java (POO)
 
-Welcome to the VS Code Java world. Here is a guideline to help you get started to write Java code in Visual Studio Code.
+## 📌 Descripción
 
-## Folder Structure
+Este proyecto consiste en un sistema de gestión de tareas desarrollado en Java, enfocado en aplicar los principios fundamentales de la Programación Orientada a Objetos (POO).
 
-The workspace contains two folders by default, where:
+Permite la creación y administración de usuarios y tareas, así como la asignación de tareas a usuarios y el seguimiento de su estado (pendiente o completada).
 
-- `src`: the folder to maintain sources
-- `lib`: the folder to maintain dependencies
+---
 
-Meanwhile, the compiled output files will be generated in the `bin` folder by default.
+## 🎯 Objetivos del proyecto
 
-> If you want to customize the folder structure, open `.vscode/settings.json` and update the related settings there.
+* Aplicar conceptos de POO:
 
-## Dependency Management
+  * Encapsulamiento
+  * Responsabilidad de clases
+  * Separación de lógica (Services vs Entities)
+* Manejo de colecciones (`List`)
+* Uso de validaciones y excepciones
+* Comprensión del manejo de referencias en memoria
+* Construcción de una base evolutiva hacia arquitectura backend
 
-The `JAVA PROJECTS` view allows you to manage your dependencies. More details can be found [here](https://github.com/microsoft/vscode-java-dependency#manage-dependencies).
+---
+
+## ⚙️ Funcionalidades
+
+* ✅ Crear usuarios
+* ✅ Crear tareas
+* ✅ Listar usuarios
+* ✅ Listar tareas
+* ✅ Asignar tareas a usuarios
+* ✅ Marcar tareas como completadas
+* ✅ Listar tareas por usuario
+
+---
+
+## 🧱 Estructura del proyecto
+
+```
+model/
+    Usuario.java
+    Tarea.java
+
+service/
+    UsuarioService.java
+    TareaService.java
+
+app/
+    Main.java
+```
+
+---
+
+## 🧠 Diseño actual
+
+El sistema sigue una arquitectura básica en capas:
+
+* **Model** → Representa las entidades del dominio (`Usuario`, `Tarea`)
+* **Service** → Contiene la lógica de negocio
+* **Main** → Interfaz de consola para interacción con el usuario
+
+---
+
+## ⚠️ Consideraciones técnicas
+
+* Se utilizan excepciones (`IllegalArgumentException`) para validaciones
+* Los servicios gestionan el acceso y control de datos
+* Se evita exponer directamente las listas internas mediante estructuras inmutables (`List.copyOf()`)
+
+---
+
+## 🚀 Estado del proyecto
+
+```
+Versión actual: v1
+Estado: Funcional (POO básica)
+```
+
+---
+
+## 🔄 Próximas mejoras (roadmap)
+
+* Implementación de DTOs (Data Transfer Objects)
+* Creación de Mappers para conversión de datos
+* Separación más clara de capas
+* Preparación para arquitectura tipo backend (API REST)
+* Posible integración con frameworks como Spring Boot
+
+---
+
+## 🛠️ Tecnologías utilizadas
+
+* Java
+* Programación Orientada a Objetos (POO)
+* Colecciones (`List`, Streams)
+
+---
+
+## 📚 Aprendizaje
+
+Este proyecto no solo busca funcionar, sino evolucionar progresivamente hacia un diseño más profesional, simulando el crecimiento de un sistema real.
+
+---
+
+## 👨‍💻 Autor
+
+Desarrollado como parte de un proceso de aprendizaje enfocado en convertirse en desarrollador backend/fullstack.
+
+
+
+
+
