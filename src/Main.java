@@ -1,7 +1,7 @@
 import java.util.Scanner;
 
-import model.Tarea;
-import model.Usuario;
+import model.entity.Tarea;
+import model.entity.Usuario;
 import service.TareaService;
 import service.UsuarioService;
 

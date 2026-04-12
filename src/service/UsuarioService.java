@@ -2,7 +2,7 @@ package service;
 import java.util.ArrayList;
 import java.util.List;
 
-import model.Usuario;
+import model.entity.Usuario;
 
 public class UsuarioService {
 
