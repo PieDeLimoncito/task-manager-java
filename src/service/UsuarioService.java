@@ -36,4 +36,9 @@ public class UsuarioService {
         .findFirst()
         .orElseThrow(() -> new IllegalArgumentException("El ID ingresado no esta asociado a un usuario registrado"));
     }
+
+    public Object buscarUsuarioEntityPorId(int usuarioId) {
+        // TODO Auto-generated method stub
+        throw new UnsupportedOperationException("Unimplemented method 'buscarUsuarioEntityPorId'");
+    }
 }

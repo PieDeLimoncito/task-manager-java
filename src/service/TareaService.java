@@ -2,7 +2,10 @@ package service;
 import java.util.ArrayList;
 import java.util.List;
 
+import model.dto.CrearTareaDTO;
+import model.dto.TareaDTO;
 import model.entity.Tarea;
+import model.mapper.TareaMapper;
 
 public class TareaService {
 
@@ -12,34 +15,40 @@ public class TareaService {
     public TareaService(UsuarioService servicioDeUsuarios) {
         this.tareas = new ArrayList<>();
         this.servicioDeUsuarios = servicioDeUsuarios;
+
     }
 
-    public Tarea crearTarea(String titulo, String descripcion){
-        if(titulo == null){
-            throw new IllegalArgumentException("La tarea no puede ser creada sin un nombre");
+    public TareaDTO crearTarea(CrearTareaDTO ctd){
+        if(ctd == null){
+            throw new IllegalArgumentException("Solicitud vacia");
         }
-        var t = new Tarea(titulo, descripcion);
+
+        var t = TareaMapper.toEntity(ctd);
+
         tareas.add(t);
-        return t;
+        return TareaMapper.toDto(t);
     }
 
-    public List<Tarea> listarTareas(){
-        return List.copyOf(tareas);
+    public List<TareaDTO> listarTareas(){
+        return tareas.stream()
+        .map(TareaMapper::toDto)
+        .toList();
     }
 
-    public Tarea marcarTareaComoCompletadaPorId(int id){
-        var tarea = buscarTareaPorId(id);
+    public TareaDTO marcarTareaComoCompletadaPorId(int id){
+        var tarea = buscarTareaEntityPorId(id);
         tarea.completarTarea();
-        return tarea;
+        return TareaMapper.toDto(tarea);
     }
 
-    public Tarea asignarTareaAUnUsuario(int usuarioId, int tareaId){
-        var usuario = servicioDeUsuarios.buscarUsuarioPorId(usuarioId);
+    public TareaDTO asignarTareaAUnUsuario(int usuarioId, int tareaId){
+        var usuario = servicioDeUsuarios.buscarUsuarioEntityPorId(usuarioId);
+
         if(usuario == null){
             throw new IllegalArgumentException("No se puede asignar la tarea al usuario. Usuario no registrado con ese id");
         }
 
-        var tarea =  buscarTareaPorId(tareaId);
+        var tarea =  buscarTareaEntityPorId(tareaId);
 
         if(tarea == null){
             throw new IllegalArgumentException("No se puede asignar la tarea al usuario. Tarea no encontrada");
@@ -47,28 +56,29 @@ public class TareaService {
 
         tarea.asignarUsuarioPorId(usuarioId);
 
-        return tarea;
+        return TareaMapper.toDto(tarea);
     }
 
-    public Tarea buscarTareaPorId(int id){
-        Tarea tareaEncontrada = null;
-        for (int i = 0; i < tareas.size(); i++) {
-            if(tareas.get(i).getId()==id){
-                tareaEncontrada = tareas.get(i);
-                break;
+    private Tarea buscarTareaEntityPorId(int id){
+        for (Tarea t : tareas) {
+            if(t.getId()== id){
+                return t;
             }
         }
+        throw new IllegalArgumentException("Tarea no encontrada con el ID suministrado");
+    }
+    
 
-        if(tareaEncontrada==null){
-                throw new IllegalArgumentException("Tarea no encontrada con el ID suministrado");
-            }
+    public TareaDTO buscarTareaPorId(int id){
+        var t = buscarTareaEntityPorId(id);
+        return TareaMapper.toDto(t);
 
-            return tareaEncontrada;
     }
 
-    public List<Tarea> listarTareasPorUsuario(int usuarioId){
+    public List<TareaDTO> listarTareasPorUsuario(int usuarioId){
         return tareas.stream()
         .filter(t -> t.getUsuarioId()==usuarioId)
+        .map(TareaMapper::toDto)
         .toList();
     }
 
