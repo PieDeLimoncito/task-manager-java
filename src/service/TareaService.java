@@ -23,6 +23,10 @@ public class TareaService {
             throw new IllegalArgumentException("Solicitud vacia");
         }
 
+        if(ctd.getTitulo().isBlank()){
+            throw new IllegalArgumentException("No se puede crear una tarea sin titulo");
+        }
+
         var t = TareaMapper.toEntity(ctd);
 
         tareas.add(t);
@@ -42,17 +46,8 @@ public class TareaService {
     }
 
     public TareaDTO asignarTareaAUnUsuario(int usuarioId, int tareaId){
-        var usuario = servicioDeUsuarios.buscarUsuarioEntityPorId(usuarioId);
-
-        if(usuario == null){
-            throw new IllegalArgumentException("No se puede asignar la tarea al usuario. Usuario no registrado con ese id");
-        }
 
         var tarea =  buscarTareaEntityPorId(tareaId);
-
-        if(tarea == null){
-            throw new IllegalArgumentException("No se puede asignar la tarea al usuario. Tarea no encontrada");
-        }
 
         tarea.asignarUsuarioPorId(usuarioId);
 
@@ -82,7 +77,4 @@ public class TareaService {
         .toList();
     }
 
-    public UsuarioService getServicioDeUsuarios() {
-        return servicioDeUsuarios;
-    }
 }

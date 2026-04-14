@@ -2,7 +2,10 @@ package service;
 import java.util.ArrayList;
 import java.util.List;
 
+import model.dto.CrearUsuarioDTO;
+import model.dto.UsuarioDTO;
 import model.entity.Usuario;
+import model.mapper.UsuarioMapper;
 
 public class UsuarioService {
 
@@ -12,33 +15,46 @@ public class UsuarioService {
         this.usuarios = new ArrayList<>();
     }
 
-    public Usuario crearUsuario(String nombre, int edad, String profesion){
-        if(nombre.isBlank()){
+    public UsuarioDTO crearUsuario(CrearUsuarioDTO cud){
+
+        if (cud == null){
+            throw new IllegalArgumentException("Solicitud de crear usuario vacia");
+        }
+        if(cud.getNombre().isBlank()){
             throw new IllegalArgumentException("No puede crear un usuario sin nombre");
         }
 
-        if(edad <=0){
-            throw new IllegalArgumentException("No puede crear un usuario con esa edad.");
+        if(cud.getEdad()<=0 || cud.getEdad()>150){
+            throw new IllegalArgumentException("No se puede crear a un usuario con esta edad");
         }
 
-        var u = new Usuario(nombre, edad, profesion);
+        if(cud.getProfesion().isBlank()){
+            throw new IllegalArgumentException("No es posible crear un usuario sin profesion");
+        }
+
+        var u = UsuarioMapper.toEntity(cud);
         usuarios.add(u);
-        return u;
+        return UsuarioMapper.toDTO(u);
     }
 
-    public List<Usuario> listarUsuarios(){
-        return List.copyOf(usuarios);
-    }
-
-    public Usuario buscarUsuarioPorId(int id){
+    public List<UsuarioDTO> listarUsuarios(){
         return usuarios.stream()
-        .filter(u -> u.getId()==id)
-        .findFirst()
-        .orElseThrow(() -> new IllegalArgumentException("El ID ingresado no esta asociado a un usuario registrado"));
+        .map(UsuarioMapper::toDTO)
+        .toList();
     }
 
-    public Object buscarUsuarioEntityPorId(int usuarioId) {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'buscarUsuarioEntityPorId'");
+    private Usuario buscarUsuarioEntityPorId(int id){
+        for(Usuario u : usuarios){
+            if(u.getId() == id){
+                return u;
+            }
+        }
+
+        throw new IllegalArgumentException("No se ha encontrado un usuario con este ID");
+    }
+
+    public UsuarioDTO buscarUsuarioPorId(int id){
+        var u = buscarUsuarioEntityPorId(id);
+        return UsuarioMapper.toDTO(u);
     }
 }
